@@ -1,32 +1,22 @@
 package io.vandalvnl.stringilizy;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.sql.SQLOutput;
 import java.util.Optional;
 
 public abstract class SequelizeStrings {
-
-    private static Boolean isGetter(Method method) {
-        return Modifier.isPublic(method.getModifiers())
-                && method.getParameterTypes().length == 0
-                && method.getReturnType() != void.class
-                && (method.getName().startsWith("get")
-                || method.getName().startsWith("is"));
-    }
 
     public static String createSqlBind(String table, Object created) throws InvocationTargetException, IllegalAccessException {
         return createSql(table, created, true);
     }
 
-    static String createSql(String table, Object created) throws InvocationTargetException,
+    public static String createSql(String table, Object created) throws InvocationTargetException,
             IllegalAccessException {
         return createSql(table, created, false);
     }
 
-    static String createSql(String table, Object created, Boolean bind) throws InvocationTargetException,
+    private static String createSql(String table, Object created, Boolean bind) throws InvocationTargetException,
             IllegalAccessException {
         StringBuilder builder = new StringBuilder().append("INSERT INTO ").append(table).append(" ");
         for (Method method : created.getClass().getDeclaredMethods()) {
@@ -60,5 +50,13 @@ public abstract class SequelizeStrings {
             return "'" + value.get() + "'";
         }
         return "";
+    }
+
+    private static Boolean isGetter(Method method) {
+        return Modifier.isPublic(method.getModifiers())
+                && method.getParameterTypes().length == 0
+                && method.getReturnType() != void.class
+                && (method.getName().startsWith("get")
+                || method.getName().startsWith("is"));
     }
 }

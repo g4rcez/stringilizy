@@ -17,8 +17,9 @@ public abstract class Stringilizy {
     }
 
     public static String capitalizeWords(String words) {
-        if (words.length() == 0)
+        if (words.length() == 0) {
             return words;
+        }
         StringBuilder stringBuilder = new StringBuilder();
         StringTokenizer tokens = new StringTokenizer(words, " \t\n", true);
         while (tokens.hasMoreTokens()) {
@@ -50,8 +51,8 @@ public abstract class Stringilizy {
     }
 
     public static String toSneakCase(final String string) {
-        StringBuilder stringBuilder = new StringBuilder();
         Matcher matcher = RegexMatcher.getMatcher(string);
+        StringBuilder stringBuilder = new StringBuilder();
         while (matcher.find()) {
             stringBuilder.append(matcher.group(0).toLowerCase().concat("_"));
         }
@@ -83,14 +84,14 @@ public abstract class Stringilizy {
         return string.split("\\s+");
     }
 
-    public static String escapeHtml(String string) {
+    public static String escapeHTML(String string) {
         for (int i = 0; i < RegexMatcher.HTML_ESCAPED.length; i++) {
             string = string.replaceAll(RegexMatcher.HTML_UNSAFE[i], RegexMatcher.HTML_ESCAPED[i]);
         }
         return string;
     }
 
-    public static String clearHtml(final String string) {
+    public static String purgeHTML(final String string) {
         return string.replaceAll("<[^>]*>", "");
     }
 
@@ -103,8 +104,6 @@ public abstract class Stringilizy {
     }
 
     public static String getter2prop(final String getter) {
-        return getter.startsWith("get") ?
-                toCamelCase(getter.replaceAll("^get", ""))
-                : toCamelCase(getter);
+        return getter.startsWith("get") ? toCamelCase(getter.replaceAll("^get", "")) : toCamelCase(getter);
     }
 }
